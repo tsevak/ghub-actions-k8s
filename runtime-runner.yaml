@@ -1,11 +1,14 @@
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
-  name: k8s-runner
+  name: k8s-runner-2
+  labels:
+    platform: aws-k8s
 spec:
   template:
     spec:
-      repository: tsevak/ghub-actions-k8s 
+      repository: tsevak/open-runtime-module-library
+
 ---
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler
@@ -13,11 +16,11 @@ metadata:
   name: runner-deployment-autoscaler
 spec:
   scaleTargetRef:
-    name: k8s-runner
+    name: k8s-runner-2
   scaleDownDelaySecondsAfterScaleOut: 300
   minReplicas: 1
   maxReplicas: 5
   metrics:
   - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
     repositoryNames:
-    - tsevak/ghub-actions-k8s
+    - tsevak/open-runtime-module-library
